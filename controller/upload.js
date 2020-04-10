@@ -46,10 +46,7 @@ const getFiles = ({params} , res) =>{
                     data:results
                 })
             })
-    
-
-
-        }
+        }else{
         filePath.find({},(err , results)=>{
 
             if(err){
@@ -62,6 +59,7 @@ const getFiles = ({params} , res) =>{
             })
 
         })
+    }
 
     }catch(e){
         console.log(e);
@@ -92,17 +90,28 @@ const deleteFiles = ({params} , res) => {
         
     }
 
-
-
-
 };
 
 
-const updateFile = ({body} , res)=>{
+const updateFile = ({body , params} , res)=>{
+    try{
+
+        const {name} = body;
+        const {id} = params;
+
+        filePath.update({_id:id} , {$set:{name}})
+
+        return messages(200, "Updated" , true , res);
 
 
 
-    
+    }catch(e){
+        console.log(e);
+        return messages(500 , "Server Error" , false , res);
+        
+    }
+
+
 }
 
 module.exports ={
