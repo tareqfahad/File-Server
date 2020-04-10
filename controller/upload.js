@@ -62,7 +62,7 @@ const getFiles = ({params} , res) =>{
             })
 
         })
-            
+
     }catch(e){
         console.log(e);
         return messages(500 , "Server Error " , false , res)
@@ -74,7 +74,40 @@ const getFiles = ({params} , res) =>{
 
 };
 
+
+const deleteFiles = ({params} , res) => {
+    try{
+
+        const {id} = params;
+
+        filePath.remove({_id:id})
+
+        return messages(200, "Deleted" , true , res);
+
+
+
+    }catch(e){
+        console.log(e);
+        return messages(500 , "Server Error" , false , res);
+        
+    }
+
+
+
+
+};
+
+
+const updateFile = ({body} , res)=>{
+
+
+
+    
+}
+
 module.exports ={
     UploadController,
-    getFiles
+    getFiles,
+    deleteFiles,
+    updateFile
 }
