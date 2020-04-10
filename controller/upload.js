@@ -5,12 +5,21 @@ const UploadController = ({files} , res )=>{
 try{
 
 
+    files.map(file =>{
+    
+        filePath.insert({
+            name:file.originalname,
+            path:`/data/files/${file.originalname}`,
+            type:file.mimetype
+        })
 
 
+    })
 
-
-
-
+    return res.status(200).json({
+        success:true,
+        code:`${files.length} has been uploaded`
+    }) 
 
 
 }catch(e){
