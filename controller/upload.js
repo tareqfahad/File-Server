@@ -2,6 +2,7 @@ const messages = require('../config/messages');
 const Datastore = require('nedb');
 const filePath = new Datastore({filename:'data/db/path' , autoload:true});
 const path = require('path');
+const fs = require('fs');
 
 const UploadController = ({files} , res )=>{
 try{
@@ -10,7 +11,6 @@ try{
     
         filePath.insert({
             name:file.originalname,
-            path:`/data/files/${file.originalname}`,
             type:file.mimetype
         })
 
@@ -79,7 +79,14 @@ const deleteFiles = ({params} , res) => {
 
         const {id} = params;
 
-        filePath.remove({_id:id})
+        filePath.findOne({_id:id},(err , results)=>{
+            if(err){
+                return messages(500 , false , "Error Getting Files" , res)
+            }
+            fs.unlinkSync(path.resolve(`data/files/${results.name}`))
+        })
+
+        filePath.remove({_id:id});
 
         return messages(200, "Deleted" , true , res);
 
