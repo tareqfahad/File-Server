@@ -1,6 +1,7 @@
 const messages = require('../config/messages');
 const Datastore = require('nedb');
 const filePath = new Datastore({filename:'data/db/path' , autoload:true});
+const path = require('path');
 
 const UploadController = ({files} , res )=>{
 try{
@@ -37,14 +38,14 @@ const getFiles = ({params} , res) =>{
 
         const {id} = params
         if(id){
-            filePath.find({_id:id},(err , results)=>{
+            filePath.findOne({_id:id},(err , results)=>{
                 if(err){
                     return messages(500 , false , "Error Getting Files" , res)
                 }
-                return res.status(200).json({
-                    
-                    data:results
-                })
+
+                return res.download('../data/files/' , results.name)
+
+
             })
         }else{
         filePath.find({},(err , results)=>{
